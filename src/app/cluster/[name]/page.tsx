@@ -75,7 +75,7 @@ export default function ClusterConnectorsPage() {
         //       }
         //     }
         //   ]
-        const tasks = await tasksResponse.json();
+        const tasksList = await tasksResponse.json();
 
         return {
             name: details.name,
@@ -87,7 +87,7 @@ export default function ClusterConnectorsPage() {
                 state: task.state,
                 worker_id: task.worker_id,
                 trace: task.trace,
-                // config: tasks.find((task: any) => task.id.task === task.id)?.config
+                config: tasksList.find((taskItem: any) => taskItem.id.task === task.id)?.config
             }))
         };
     };
@@ -118,7 +118,6 @@ export default function ClusterConnectorsPage() {
             );
 
             setConnectors(connectorDetails);
-            setSelectedConnector(connectorDetails[0])
             setLoading(false);
         } catch (error) {
             console.error("Error fetching connectors:", error);
@@ -180,7 +179,7 @@ export default function ClusterConnectorsPage() {
                 {/* Right Panel - Connector Details */}
                 <Card className="col-span-3 rounded-none border-l-0">
                     <CardContent className="p-6">
-                        <ConnectorDetails connector={selectedConnector} />
+                        {cluster ? <ConnectorDetails connector={selectedConnector} clusterUrl={cluster.url} /> : <></>}
                     </CardContent>
                 </Card>
             </div>

@@ -1,16 +1,14 @@
-// components/AddClusterModal.tsx
 "use client"
 
+import { Button } from "@/components/ui/button"
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle
-} from "@/components/ui/alert-dialog"
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
 import {
     Form,
     FormControl,
@@ -55,15 +53,20 @@ export default function AddClusterModal() {
         form.reset()
     }
 
+    const handleClose = () => {
+        setShowModal(false)
+        form.reset()
+    }
+
     return (
-        <AlertDialog open={showModal} onOpenChange={setShowModal}>
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>Add New Cluster</AlertDialogTitle>
-                    <AlertDialogDescription>
+        <Dialog open={showModal} onOpenChange={setShowModal}>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>Add New Cluster</DialogTitle>
+                    <DialogDescription>
                         Enter the details for the new cluster you want to add.
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
+                    </DialogDescription>
+                </DialogHeader>
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -95,17 +98,21 @@ export default function AddClusterModal() {
                             )}
                         />
 
-                        <AlertDialogFooter>
-                            <AlertDialogCancel onClick={() => form.reset()}>
+                        <DialogFooter className="gap-2 sm:gap-0">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={handleClose}
+                            >
                                 Cancel
-                            </AlertDialogCancel>
-                            <AlertDialogAction type="submit">
+                            </Button>
+                            <Button type="submit">
                                 Add Cluster
-                            </AlertDialogAction>
-                        </AlertDialogFooter>
+                            </Button>
+                        </DialogFooter>
                     </form>
                 </Form>
-            </AlertDialogContent>
-        </AlertDialog>
+            </DialogContent>
+        </Dialog>
     )
 }

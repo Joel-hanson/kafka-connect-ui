@@ -8,7 +8,9 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
+import { useState } from 'react';
 import { ConnectorTask } from '../types';
+import TaskDetails from './TaskDetails';
 import { Badge } from "./ui/badge";
 
 interface TasksTableProps {
@@ -16,6 +18,14 @@ interface TasksTableProps {
 }
 
 export default function TasksTable({ tasks }: TasksTableProps) {
+    const [selectedTask, setSelectedTask] = useState<ConnectorTask | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    const handleRowClick = (task: ConnectorTask) => {
+        setSelectedTask(task);
+        setIsDialogOpen(true);
+    };
+
     return (
         <div>
             <Table>
@@ -29,7 +39,11 @@ export default function TasksTable({ tasks }: TasksTableProps) {
                 </TableHeader>
                 <TableBody>
                     {tasks?.map((task, index) => (
-                        <TableRow key={index}>
+                        <TableRow
+                            key={index}
+                            className="cursor-pointer hover:bg-muted/50"
+                            onClick={() => handleRowClick(task)}
+                        >
                             <TableCell className="font-medium">{task.id}</TableCell>
                             <TableCell>
                                 <Badge
@@ -55,6 +69,15 @@ export default function TasksTable({ tasks }: TasksTableProps) {
                     ))}
                 </TableBody>
             </Table>
+
+            <TaskDetails
+                task={selectedTask}
+                open={isDialogOpen}
+                onClose={() => {
+                    setIsDialogOpen(false);
+                    setSelectedTask(null);
+                }}
+            />
         </div>
     );
-};
+}
